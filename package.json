@@ -55,6 +55,7 @@
 		"progress": "^2.0.3",
 		"tar": "^4.4.10",
 		"tempy": "^0.3.0",
+		"tunnel": "^0.0.6",
 		"tildify": "^2.0.0",
 		"untildify": "^4.0.0",
 		"update-notifier": "^3.0.1"

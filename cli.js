@@ -141,6 +141,18 @@ const promptEngines = () => {
 			const os = arg.split('=')[1];
 			status.os = os === 'default' ? guessOs() : os;
 		}
+		else if (arg.startsWith('--global-proxy=')) {
+			const globalProxyArg = arg.split('=')[1].toLowerCase();
+			status.globalProxy = ['true', 'yes', 't', 'y', '1'].indexOf(globalProxyArg) >= 0;
+		}
+		else if (arg.startsWith('--http-proxy=')) {
+			const proxyArg = arg.split('=')[1];
+			status.httpProxy = proxyArg;
+		}
+		else if (arg.startsWith('--https-proxy=')) {
+			const proxyArg = arg.split('=')[1];
+			status.httpsProxy = proxyArg;
+		}
 		else if (arg.startsWith('--engines=')) {
 			const enginesArg = arg.split('=')[1];
 			const engines = enginesArg === 'all' ?
@@ -161,6 +173,9 @@ const promptEngines = () => {
 			console.log('[<engine>@<version>]');
 			console.log(`[--os={${ osChoices.map(choice => choice.value).join(',') },default}]`);
 			console.log(`[--engines={${ engineChoices.map(choice => choice.value).join(',') }},…]`);
+			console.log(`[--http-proxy=<proxy url>]`);
+			console.log(`[--https-proxy=<proxy url>]`);
+			console.log(`[--global-proxy=<flag>]`);
 
 			console.log('\nComplete documentation is online:');
 			console.log('https://github.com/GoogleChromeLabs/jsvu#readme');
@@ -200,6 +215,13 @@ const promptEngines = () => {
 	} else {
 		log.success(`Read engines from config: ${status.engines.join(', ')}`);
 	}
+
+	if (status.httpProxy !== undefined && status.httpProxy.length !== 0)
+		log.success(`Read HTTP proxy from config: ${status.httpProxy}`);
+	if (status.httpsProxy !== undefined && status.httpsProxy.length !== 0)
+		log.success(`Read HTTPS proxy from config: ${status.httpsProxy}`);
+	if (status.globalProxy !== undefined)
+		log.success(`Read global proxy flag from config: ${status.globalProxy}`);
 
 	// Install the desired JavaScript engines.
 	const updateEngine = require('./shared/engine.js');
